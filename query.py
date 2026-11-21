@@ -23,6 +23,12 @@ def create_rag_chain(index_name: str = "CodebaseChunk"):
         auth_credentials=AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
     )
 
+    if not client.collections.exists(index_name):
+        client.close()
+        raise ValueError(
+            f"Collection '{index_name}' was not found in Weaviate. Click 'Clone & Index Repository' in the sidebar first."
+        )
+
     embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
 
     vector_store = WeaviateVectorStore(
@@ -68,10 +74,3 @@ def ask_codebase(query: str, index_name: str = "CodebaseChunk"):
     finally:
         if client is not None:
             client.close()
-
-
-if __name__ == "__main__":
-    question = "Where is the main request handling logic defined and how is routing executed?"
-    answer = ask_codebase(question)
-    print("\n=== Gemini Analysis ===\n")
-    print(answer)
