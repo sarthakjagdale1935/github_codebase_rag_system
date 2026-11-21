@@ -5,6 +5,7 @@ import tempfile
 from git import Repo
 import weaviate
 from weaviate.auth import AuthApiKey
+from weaviate.classes.config import Configure, Property, DataType
 from langchain_community.document_loaders.generic import GenericLoader
 from langchain_community.document_loaders.parsers import LanguageParser
 from langchain_text_splitters import Language, RecursiveCharacterTextSplitter
@@ -92,6 +93,21 @@ def process_and_index_codebase(
         client = weaviate.connect_to_weaviate_cloud(
             cluster_url=os.getenv("WEAVIATE_URL"),
             auth_credentials=AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
+        )
+
+        # Recreate collection with an explicit vector index so gRPC vector search works
+        if client.collections.exists(index_name):
+            client.collections.delete(index_name)
+
+        client.collections.create(
+            name=index_name,
+            vectorizer_config=Configure.Vectorizer.none(),
+            vector_index_config=Configure.VectorIndex.hnsw(),
+            properties=[
+                Property(name="text", data_type=DataType.TEXT),
+                Property(name="file_path", data_type=DataType.TEXT),
+                Property(name="language", data_type=DataType.TEXT),
+            ],
         )
 
         embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
