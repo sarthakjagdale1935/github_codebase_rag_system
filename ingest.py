@@ -95,14 +95,13 @@ def process_and_index_codebase(
             auth_credentials=AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
         )
 
-        # Recreate collection with an explicit vector index so gRPC vector search works
+        # Omit vector_index_config so Weaviate uses the cluster's default (hfresh)
         if client.collections.exists(index_name):
             client.collections.delete(index_name)
 
         client.collections.create(
             name=index_name,
             vectorizer_config=Configure.Vectorizer.none(),
-            vector_index_config=Configure.VectorIndex.hnsw(),
             properties=[
                 Property(name="text", data_type=DataType.TEXT),
                 Property(name="file_path", data_type=DataType.TEXT),
