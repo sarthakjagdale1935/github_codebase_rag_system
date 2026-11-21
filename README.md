@@ -7,7 +7,9 @@ A Code-Aware Retrieval-Augmented Generation (RAG) system built with LangChain, W
 🔗 **Live App:** [https://appcodebaseragsystem-kmjxadi5y9dptwhd2xsyru.streamlit.app/](https://appcodebaseragsystem-kmjxadi5y9dptwhd2xsyru.streamlit.app/)
 
 ---
-![Uploading image.png…]()
+
+<img width="1917" height="1018" alt="image" src="https://github.com/user-attachments/assets/f45c8f18-d68b-44ea-9d03-ec2be13af445" />
+
 
 ##  Key Features
 
