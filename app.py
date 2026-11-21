@@ -3,7 +3,7 @@ from ingest import process_and_index_codebase
 from query import ask_codebase
 
 st.set_page_config(page_title="GitHub Codebase Chatter", layout="wide")
-st.title("💻 GitHub Codebase Chatter (Code-Aware RAG)")
+st.title(" GitHub Codebase Chatter (Code-Aware RAG)")
 
 with st.sidebar:
     st.header("1. Ingest Repository")
